@@ -8,6 +8,10 @@ import { violin } from './violin';
 import { groupedBar } from './groupedBar';
 import { scatter } from './scatter';
 import { line } from './line';
+import { volcano } from './volcano';
+import { histogram } from './histogram';
+import { raincloud } from './raincloud';
+import { paired } from './paired';
 
 // Core builder contract (§3): every plot is a pure
 // (table, mapping, opts) => { traces, layout }.
@@ -27,6 +31,10 @@ export const builders: Partial<Record<PlotType, PlotBuilder>> = {
   groupedBar,
   scatter,
   line,
+  volcano,
+  histogram,
+  raincloud,
+  paired,
 };
 
 export interface PlotInfo {

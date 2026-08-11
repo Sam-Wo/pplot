@@ -57,7 +57,43 @@ function attachHeatmapCrosshair(gd: any): () => void {
   };
 }
 
+// Volcano click-to-label (§8 stretch): click a point to pin/unpin its label.
+function attachVolcano(gd: any): () => void {
+  const detachHighlight = attachSeriesHighlight(gd);
+  const onClick = (e: any) => {
+    const p = e.points?.[0];
+    if (!p || p.customdata == null) return;
+    const text = String(p.customdata);
+    const anns = (gd.layout.annotations ?? []).slice();
+    const idx = anns.findIndex(
+      (a: any) => a.text === text && Math.abs(a.x - p.x) < 1e-9 && Math.abs(a.y - p.y) < 1e-9
+    );
+    if (idx >= 0) anns.splice(idx, 1);
+    else
+      anns.push({
+        x: p.x,
+        y: p.y,
+        text,
+        xref: 'x',
+        yref: 'y',
+        showarrow: true,
+        arrowhead: 0,
+        arrowcolor: '#5C6675',
+        ax: 0,
+        ay: -18,
+        font: { family: 'Arial, Helvetica, sans-serif', size: 11, color: '#141A22' },
+      });
+    void Plotly.relayout(gd, { annotations: anns });
+  };
+  gd.on('plotly_click', onClick);
+  return () => {
+    detachHighlight();
+    gd.removeListener?.('plotly_click', onClick);
+  };
+}
+
 export function attachHover(gd: HTMLDivElement, plotType: PlotType): () => void {
   if (plotType === 'heatmap') return attachHeatmapCrosshair(gd);
+  if (plotType === 'volcano') return attachVolcano(gd);
   return attachSeriesHighlight(gd);
 }

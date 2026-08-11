@@ -53,8 +53,14 @@ probabilities in `lib/stats.ts`. Drives **display-only significance brackets** o
 scatter fits. This goes beyond the spec's §12 "not a statistics package" non-goal by explicit user
 request; annotations remain display-only (no automated test-selection engine).
 
-Phase 3 plots (raincloud, volcano, histogram, paired) are listed but not built; the plot picker
-shows those disabled with their phase.
+**Phase 3 complete & browser-verified:** volcano (FC/p thresholds, up/down/n.s. classes,
+auto-labelled significant points, click-to-pin labels via `hover.ts`), histogram/density (bins,
+normalize, KDE overlay in `lib/kde.ts`), raincloud (half-violin + box + rain points), paired/
+before-after (per-subject lines coloured by direction). All registered in `plots/index.ts` with
+role UI + style controls.
+
+**Remaining (requested, not yet built):** non-spec Prism types (pie / parts-of-whole, Kaplan–Meier
+survival, grouped scatter), Glide Data Grid swap, and faceting / small multiples.
 
 ### Deliberate deviations from the spec
 - **Simple controlled grid** still in place; Glide Data Grid swap-in is deferred (spec §2 permits a

@@ -59,6 +59,7 @@ export type ViolinSide = 'both' | 'half';
 export type SignificanceMode = 'none' | 'adjacent' | 'vsFirst';
 export type SigTest = 'welch' | 'student';
 export type SigLabel = 'stars' | 'p';
+export type HistNorm = 'count' | 'probability' | 'density';
 
 // One options bag shared across plots; each builder reads the fields it needs.
 export interface PlotOptions {
@@ -99,6 +100,19 @@ export interface PlotOptions {
   significance: SignificanceMode;
   sigTest: SigTest;
   sigLabel: SigLabel;
+
+  // volcano
+  fcThreshold: number; // |log2FC| cutoff
+  pThreshold: number; // p-value cutoff
+  labelSignificant: boolean;
+
+  // histogram
+  histBins: number; // 0 = auto
+  histNorm: HistNorm;
+  histDensity: boolean; // overlay KDE
+
+  // paired
+  pairedColorByDirection: boolean;
 }
 
 export const defaultOptions: PlotOptions = {
@@ -126,4 +140,11 @@ export const defaultOptions: PlotOptions = {
   significance: 'none',
   sigTest: 'welch',
   sigLabel: 'stars',
+  fcThreshold: 1,
+  pThreshold: 0.05,
+  labelSignificant: true,
+  histBins: 0,
+  histNorm: 'count',
+  histDensity: false,
+  pairedColorByDirection: true,
 };

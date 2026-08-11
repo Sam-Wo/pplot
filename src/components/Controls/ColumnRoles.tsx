@@ -4,7 +4,7 @@ import { isImplemented } from '../../plots';
 import type { PlotType } from '../../data/types';
 import { Field, Select } from '../ui';
 
-const COLUMN_SHAPE: PlotType[] = ['bar', 'dot', 'box', 'violin'];
+const COLUMN_SHAPE: PlotType[] = ['bar', 'dot', 'box', 'violin', 'histogram', 'raincloud', 'paired'];
 const XY_SHAPE: PlotType[] = ['scatter', 'line'];
 
 // Role mapping UI (§5), shaped by plot type. Smart defaults come from the store;
@@ -32,9 +32,15 @@ export function ColumnRoles() {
       setMapping({
         value: selected.includes(name) ? selected.filter((n) => n !== name) : [...selected, name],
       });
+    const valueLabel =
+      plotType === 'heatmap'
+        ? 'Value columns (matrix)'
+        : plotType === 'paired'
+          ? 'Before / after (pick 2)'
+          : 'Groups (value columns)';
     return (
       <div>
-        <Field label={plotType === 'heatmap' ? 'Value columns (matrix)' : 'Groups (value columns)'}>
+        <Field label={valueLabel}>
           <CheckList
             names={nums.map((c) => c.name)}
             selected={selected}
@@ -117,6 +123,23 @@ export function ColumnRoles() {
               </option>
             ))}
           </Select>
+        </Field>
+      </div>
+    );
+  }
+
+  // --- Volcano ---
+  if (plotType === 'volcano') {
+    return (
+      <div>
+        <Field label="log₂ fold-change">
+          <ColSelect value={mapping.log2fc} onChange={(v) => setMapping({ log2fc: v })} names={nums.map((c) => c.name)} />
+        </Field>
+        <Field label="p-value">
+          <ColSelect value={mapping.pvalue} onChange={(v) => setMapping({ pvalue: v })} names={nums.map((c) => c.name)} />
+        </Field>
+        <Field label="Point labels">
+          <ColSelect value={mapping.label} onChange={(v) => setMapping({ label: v })} names={texts.map((c) => c.name)} />
         </Field>
       </div>
     );

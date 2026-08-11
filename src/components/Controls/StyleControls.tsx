@@ -4,6 +4,7 @@ import { paletteLabels } from '../../theme/palettes';
 import type {
   CenterKind,
   ErrorKind,
+  HistNorm,
   PaletteName,
   SequentialScale,
   SigLabel,
@@ -31,6 +32,9 @@ export function StyleControls() {
   const isScatter = plotType === 'scatter';
   const isLine = plotType === 'line';
   const isHeatmap = plotType === 'heatmap';
+  const isVolcano = plotType === 'volcano';
+  const isHistogram = plotType === 'histogram';
+  const isPaired = plotType === 'paired';
   const isColumn = isBarDot || isBox || isViolin;
 
   const significanceBlock = (
@@ -224,6 +228,63 @@ export function StyleControls() {
         </div>
       )}
 
+      {isVolcano && (
+        <>
+          <div className="grid grid-cols-2 gap-2">
+            <Field label="|log₂FC| cutoff">
+              <NumberInput value={o.fcThreshold} step={0.1} min={0} onChange={(v) => set({ fcThreshold: v })} />
+            </Field>
+            <Field label="p cutoff">
+              <NumberInput value={o.pThreshold} step={0.01} min={0} max={1} onChange={(v) => set({ pThreshold: v })} />
+            </Field>
+          </div>
+          <Toggle
+            checked={o.labelSignificant}
+            onChange={(v) => set({ labelSignificant: v })}
+            label="Label significant"
+          />
+          <p className="mt-1 text-[11px] text-ink-soft">Click any point to pin its label.</p>
+        </>
+      )}
+
+      {isHistogram && (
+        <>
+          <Field label={`Bins · ${o.histBins === 0 ? 'auto' : o.histBins}`}>
+            <input
+              type="range"
+              min={0}
+              max={60}
+              step={1}
+              value={o.histBins}
+              onChange={(e) => set({ histBins: Number(e.target.value) })}
+              className="w-full accent-accent"
+            />
+          </Field>
+          <Field label="Normalize">
+            <Segmented<HistNorm>
+              value={o.histNorm}
+              onChange={(v) => set({ histNorm: v })}
+              options={[
+                { value: 'count', label: 'Count' },
+                { value: 'probability', label: 'Prob.' },
+                { value: 'density', label: 'Density' },
+              ]}
+            />
+          </Field>
+          <Toggle checked={o.histDensity} onChange={(v) => set({ histDensity: v })} label="Density curve (KDE)" />
+        </>
+      )}
+
+      {isPaired && (
+        <div className="mt-1">
+          <Toggle
+            checked={o.pairedColorByDirection}
+            onChange={(v) => set({ pairedColorByDirection: v })}
+            label="Colour by direction"
+          />
+        </div>
+      )}
+
       {isHeatmap && (
         <>
           <div className="mb-2">
@@ -266,6 +327,35 @@ function TextInput({
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       className="w-full rounded border border-line bg-surface px-2 py-1.5 text-sm text-ink outline-none transition focus:border-accent"
+    />
+  );
+}
+
+function NumberInput({
+  value,
+  onChange,
+  step,
+  min,
+  max,
+}: {
+  value: number;
+  onChange: (v: number) => void;
+  step?: number;
+  min?: number;
+  max?: number;
+}) {
+  return (
+    <input
+      type="number"
+      value={value}
+      step={step}
+      min={min}
+      max={max}
+      onChange={(e) => {
+        const n = Number(e.target.value);
+        if (Number.isFinite(n)) onChange(n);
+      }}
+      className="w-full rounded border border-line bg-surface px-2 py-1.5 font-data text-sm text-ink outline-none transition focus:border-accent"
     />
   );
 }

@@ -57,8 +57,12 @@ export function defaultMapping(table: Table, plot: PlotType): Mapping {
       return { x: texts[0], group: texts[1], value: nums.slice(0, 1) };
     case 'volcano':
       return { log2fc: nums[0], pvalue: nums[1], label: texts[0] };
+    case 'paired':
+      return { value: nums.slice(0, 2), label: texts[0] };
     case 'box':
     case 'violin':
+    case 'histogram':
+    case 'raincloud':
     case 'bar':
     case 'dot':
     default:
