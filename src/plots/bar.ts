@@ -6,6 +6,7 @@ import { jitter } from '../lib/jitter';
 import { paletteColor } from '../theme/palettes';
 import { baseLayout } from '../theme/plotlyTheme';
 import { errValue, errorLabel, fmt, hoverStyle, shade } from './util';
+import { applySignificance } from './significance';
 import type { BuildResult } from './index';
 
 // Bar (mean) + points + error (§7). Each group is its own trace so the
@@ -92,6 +93,7 @@ export function bar(table: Table, mapping: Mapping, opts: PlotOptions): BuildRes
     ticktext,
     range: [-0.6, Math.max(groups.length - 0.4, 0.6)],
   };
+  applySignificance(layout, groups, opts, 0);
 
   return { traces, layout };
 }

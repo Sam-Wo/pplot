@@ -2,6 +2,7 @@ import type { Data } from 'plotly.js';
 import type { Mapping, PlotOptions, Table } from '../data/types';
 import { xyFromMapping } from '../data/mapping';
 import { equationText, linearFit, loess } from '../lib/regression';
+import { pearson, pLabel } from '../lib/tests';
 import { paletteColor } from '../theme/palettes';
 import { baseLayout } from '../theme/plotlyTheme';
 import { hoverStyle } from './util';
@@ -36,6 +37,8 @@ export function scatter(table: Table, mapping: Mapping, opts: PlotOptions): Buil
 
     if (fit) {
       const xs = [Math.min(...s.x), Math.max(...s.x)];
+      const corr = pearson(s.x, s.y);
+      const pLine = corr ? `<br>r = ${corr.r.toFixed(3)} · ${pLabel(corr.p)}` : '';
       traces.push({
         type: 'scatter',
         mode: 'lines',
@@ -45,7 +48,7 @@ export function scatter(table: Table, mapping: Mapping, opts: PlotOptions): Buil
         line: { color, width: 2 },
         meta: s.name,
         showlegend: false,
-        hovertemplate: `${equationText(fit)}<br>R² = ${fit.r2.toFixed(3)}<extra></extra>`,
+        hovertemplate: `${equationText(fit)}<br>R² = ${fit.r2.toFixed(3)}${pLine}<extra></extra>`,
         hoverlabel: hoverStyle,
       } as Data);
     } else if (opts.trendline === 'loess') {

@@ -4,6 +4,7 @@ import { groupsFromValue } from '../data/mapping';
 import { paletteColor } from '../theme/palettes';
 import { baseLayout } from '../theme/plotlyTheme';
 import { hexA, hoverStyle, shade } from './util';
+import { applySignificance } from './significance';
 import type { BuildResult } from './index';
 
 // Box plot (§7). Column shape: each value column is a distribution, its own
@@ -37,5 +38,6 @@ export function box(table: Table, mapping: Mapping, opts: PlotOptions): BuildRes
     yTitle: opts.yTitle || 'Value',
   });
   layout.showlegend = false;
+  applySignificance(layout, groups, opts);
   return { traces, layout };
 }

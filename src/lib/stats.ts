@@ -64,8 +64,9 @@ function betacf(a: number, b: number, x: number): number {
   return h;
 }
 
-// Regularized incomplete beta I_x(a, b).
-function betai(a: number, b: number, x: number): number {
+// Regularized incomplete beta I_x(a, b). Exported: it underlies the t and F
+// tail probabilities used by lib/tests.ts.
+export function betai(a: number, b: number, x: number): number {
   if (x <= 0) return 0;
   if (x >= 1) return 1;
   const bt = Math.exp(

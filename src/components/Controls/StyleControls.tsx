@@ -6,6 +6,9 @@ import type {
   ErrorKind,
   PaletteName,
   SequentialScale,
+  SigLabel,
+  SignificanceMode,
+  SigTest,
   TrendlineKind,
   ViolinSide,
 } from '../../data/types';
@@ -28,6 +31,52 @@ export function StyleControls() {
   const isScatter = plotType === 'scatter';
   const isLine = plotType === 'line';
   const isHeatmap = plotType === 'heatmap';
+  const isColumn = isBarDot || isBox || isViolin;
+
+  const significanceBlock = (
+    <div className="mt-3 border-t border-line pt-3">
+      <Field label="Significance">
+        <Segmented<SignificanceMode>
+          value={o.significance}
+          onChange={(v) => set({ significance: v })}
+          options={[
+            { value: 'none', label: 'Off' },
+            { value: 'adjacent', label: 'Adjacent' },
+            { value: 'vsFirst', label: 'vs first' },
+          ]}
+        />
+      </Field>
+      {o.significance !== 'none' && (
+        <div className="grid grid-cols-2 gap-2">
+          <Field label="Test">
+            <Segmented<SigTest>
+              value={o.sigTest}
+              onChange={(v) => set({ sigTest: v })}
+              options={[
+                { value: 'welch', label: 'Welch' },
+                { value: 'student', label: 'Student' },
+              ]}
+            />
+          </Field>
+          <Field label="Label">
+            <Segmented<SigLabel>
+              value={o.sigLabel}
+              onChange={(v) => set({ sigLabel: v })}
+              options={[
+                { value: 'stars', label: 'Stars' },
+                { value: 'p', label: 'p-value' },
+              ]}
+            />
+          </Field>
+        </div>
+      )}
+      {o.significance !== 'none' && (
+        <p className="text-[11px] text-ink-soft">
+          Pairwise two-sample t-tests. Display-only annotation.
+        </p>
+      )}
+    </div>
+  );
 
   const centerField = (
     <Field label="Centre">
@@ -196,6 +245,8 @@ export function StyleControls() {
           )}
         </>
       )}
+
+      {isColumn && significanceBlock}
     </div>
   );
 }

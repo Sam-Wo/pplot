@@ -56,6 +56,9 @@ export type SequentialScale = 'viridis' | 'cividis';
 export type DivergingScale = 'blueRed';
 export type TrendlineKind = 'none' | 'linear' | 'loess';
 export type ViolinSide = 'both' | 'half';
+export type SignificanceMode = 'none' | 'adjacent' | 'vsFirst';
+export type SigTest = 'welch' | 'student';
+export type SigLabel = 'stars' | 'p';
 
 // One options bag shared across plots; each builder reads the fields it needs.
 export interface PlotOptions {
@@ -91,6 +94,11 @@ export interface PlotOptions {
   lineMarkers: boolean;
   lineRibbon: boolean; // mean ± SD ribbon over replicate x values
   hoverUnified: boolean; // x-unified hover (good for time-courses)
+
+  // significance annotations (display-only; computed via lib/tests)
+  significance: SignificanceMode;
+  sigTest: SigTest;
+  sigLabel: SigLabel;
 }
 
 export const defaultOptions: PlotOptions = {
@@ -115,4 +123,7 @@ export const defaultOptions: PlotOptions = {
   lineMarkers: true,
   lineRibbon: true,
   hoverUnified: false,
+  significance: 'none',
+  sigTest: 'welch',
+  sigLabel: 'stars',
 };

@@ -6,6 +6,7 @@ import { jitter } from '../lib/jitter';
 import { paletteColor } from '../theme/palettes';
 import { baseLayout } from '../theme/plotlyTheme';
 import { errValue, errorLabel, fmt, hoverStyle } from './util';
+import { applySignificance } from './significance';
 import type { BuildResult } from './index';
 
 // Dot / strip (jitter) + mean|median crossbar + error (§7). Points are the
@@ -88,6 +89,7 @@ export function dot(table: Table, mapping: Mapping, opts: PlotOptions): BuildRes
     ticktext,
     range: [-0.6, Math.max(groups.length - 0.4, 0.6)],
   };
+  applySignificance(layout, groups, opts);
 
   return { traces, layout };
 }

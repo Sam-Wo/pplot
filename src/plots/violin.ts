@@ -4,6 +4,7 @@ import { groupsFromValue } from '../data/mapping';
 import { paletteColor } from '../theme/palettes';
 import { baseLayout } from '../theme/plotlyTheme';
 import { hexA, hoverStyle, shade } from './util';
+import { applySignificance } from './significance';
 import type { BuildResult } from './index';
 
 // Violin (§7). Column shape, one trace per value column. Optional inner box,
@@ -39,5 +40,6 @@ export function violin(table: Table, mapping: Mapping, opts: PlotOptions): Build
     yTitle: opts.yTitle || 'Value',
   });
   layout.showlegend = false;
+  applySignificance(layout, groups, opts);
   return { traces, layout };
 }

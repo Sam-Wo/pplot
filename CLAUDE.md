@@ -46,8 +46,15 @@ hover); generalized role UI + shape auto-detection (Column / two-way / XY); t-ba
 median/quartile summaries wired in; project **save/load** to `.pplot.json` (`export/project.ts`,
 `state/store.ts` `loadProject`). LOESS/linear fit live in `lib/regression.ts`.
 
-Phase 3 (raincloud, volcano, histogram, paired; display-only significance brackets) is listed but
-not built; the plot picker shows those disabled with their phase.
+**Statistics module (scope expansion, user-approved):** `lib/tests.ts` — two-sample (Welch/Student)
+& paired t-tests, one-way ANOVA, Pearson/Spearman correlation, all via the incomplete-beta tail
+probabilities in `lib/stats.ts`. Drives **display-only significance brackets** on column plots
+(`plots/significance.ts`, gated by the Significance style controls) and a correlation r/p readout on
+scatter fits. This goes beyond the spec's §12 "not a statistics package" non-goal by explicit user
+request; annotations remain display-only (no automated test-selection engine).
+
+Phase 3 plots (raincloud, volcano, histogram, paired) are listed but not built; the plot picker
+shows those disabled with their phase.
 
 ### Deliberate deviations from the spec
 - **Simple controlled grid** still in place; Glide Data Grid swap-in is deferred (spec §2 permits a
