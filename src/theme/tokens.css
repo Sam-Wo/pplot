@@ -1,0 +1,15 @@
+/* UI design tokens (§10). Cool near-white canvas, graphite ink, one considered
+   petrol accent for interactive state. The figure theme lives separately in
+   plotlyTheme.ts so figures stay portable. */
+:root {
+  --bg: #f6f8fa;
+  --surface: #ffffff;
+  --ink: #141a22;
+  --ink-soft: #5c6675;
+  --line: #e2e7ed;
+  --line-strong: #cdd5de;
+  --accent: #0e7c74;
+  --accent-hover: #0b655e;
+  --accent-weak: #e7f3f2;
+  --radius: 8px;
+}

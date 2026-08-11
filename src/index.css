@@ -1,0 +1,40 @@
+@import './theme/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /* Visible keyboard focus everywhere (quality floor, §10). */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* "Instrument readout" treatment for anything representing data/measurement. */
+  .font-data {
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+    font-feature-settings: 'tnum' 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}
