@@ -44,6 +44,7 @@ export type PlotType =
   | 'groupedBar'
   | 'scatter'
   | 'line'
+  | 'doseResponse'
   | 'raincloud'
   | 'volcano'
   | 'histogram'
@@ -60,6 +61,8 @@ export type SignificanceMode = 'none' | 'adjacent' | 'vsFirst';
 export type SigTest = 'welch' | 'student';
 export type SigLabel = 'stars' | 'p';
 export type HistNorm = 'count' | 'probability' | 'density';
+export type AxisScale = 'linear' | 'log10' | 'log2';
+export type DRModel = '4pl' | '3pl';
 
 // One options bag shared across plots; each builder reads the fields it needs.
 export interface PlotOptions {
@@ -95,6 +98,14 @@ export interface PlotOptions {
   lineMarkers: boolean;
   lineRibbon: boolean; // mean ± SD ribbon over replicate x values
   hoverUnified: boolean; // x-unified hover (good for time-courses)
+
+  // axis scales (XY family)
+  xScale: AxisScale;
+  yScale: AxisScale;
+
+  // dose–response / IC50
+  drModel: DRModel;
+  drShowIC50: boolean;
 
   // significance annotations (display-only; computed via lib/tests)
   significance: SignificanceMode;
@@ -137,6 +148,10 @@ export const defaultOptions: PlotOptions = {
   lineMarkers: true,
   lineRibbon: true,
   hoverUnified: false,
+  xScale: 'linear',
+  yScale: 'linear',
+  drModel: '4pl',
+  drShowIC50: true,
   significance: 'none',
   sigTest: 'welch',
   sigLabel: 'stars',

@@ -46,12 +46,12 @@ export const examples: Example[] = [
     id: 'dose-response',
     name: 'Dose–response',
     description: 'XY shape — a dose column and one or more response series.',
-    suggested: 'scatter',
+    suggested: 'doseResponse',
     build: () =>
       table([
-        num('Dose (mg)', [0.1, 0.3, 1, 3, 10, 30, 100, 300]),
-        num('Compound A', [3, 8, 18, 34, 55, 74, 88, 95]),
-        num('Compound B', [2, 5, 11, 22, 41, 63, 80, 90]),
+        num('Dose (nM)', [0.1, 0.3, 1, 3, 10, 30, 100, 300, 1000]),
+        num('Compound A', [4, 6, 12, 28, 52, 78, 91, 97, 99]),
+        num('Compound B', [2, 4, 7, 14, 30, 55, 78, 90, 95]),
       ]),
   },
   {

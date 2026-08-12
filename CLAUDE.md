@@ -59,6 +59,17 @@ normalize, KDE overlay in `lib/kde.ts`), raincloud (half-violin + box + rain poi
 before-after (per-subject lines coloured by direction). All registered in `plots/index.ts` with
 role UI + style controls.
 
+**Dose–response / IC50 (user request):** `plots/doseResponse.ts` fits a 4PL/3PL Hill curve per
+series via a Levenberg–Marquardt solver (`lib/nonlinear.ts`, numerical Jacobian) in log-dose space
+(`lib/doseResponse.ts`), overlays the sigmoid, and reports IC50/EC50 + Hill + R² in the legend with
+IC50 markers. Handles binding (increasing) and killing (decreasing) curves. Verified: recovers known
+IC50/Hill from synthetic data.
+
+**Axis scales (user request):** `plots/axisScale.ts` — Linear / Log₁₀ / Log₂ switch for the XY
+family (scatter, line, dose–response). Log₁₀ is Plotly's native log axis; Log₂ is a native log axis
+relabelled with power-of-2 ticks (Plotly has no base-2 axis). Note the shape-coordinate gotcha:
+shapes on a log axis need `log10(value)` — see `shapeCoord`. Dose–response defaults its x to Log₁₀.
+
 **Remaining (requested, not yet built):** non-spec Prism types (pie / parts-of-whole, Kaplan–Meier
 survival, grouped scatter), Glide Data Grid swap, and faceting / small multiples.
 

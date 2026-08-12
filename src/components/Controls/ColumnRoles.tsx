@@ -5,7 +5,7 @@ import type { PlotType } from '../../data/types';
 import { Field, Select } from '../ui';
 
 const COLUMN_SHAPE: PlotType[] = ['bar', 'dot', 'box', 'violin', 'histogram', 'raincloud', 'paired'];
-const XY_SHAPE: PlotType[] = ['scatter', 'line'];
+const XY_SHAPE: PlotType[] = ['scatter', 'line', 'doseResponse'];
 
 // Role mapping UI (§5), shaped by plot type. Smart defaults come from the store;
 // this lets the user reassign columns to slots.

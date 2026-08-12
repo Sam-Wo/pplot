@@ -5,6 +5,7 @@ import { equationText, linearFit, loess } from '../lib/regression';
 import { pearson, pLabel } from '../lib/tests';
 import { paletteColor } from '../theme/palettes';
 import { baseLayout } from '../theme/plotlyTheme';
+import { axisScaleProps } from './axisScale';
 import { hoverStyle } from './util';
 import type { BuildResult } from './index';
 
@@ -77,7 +78,9 @@ export function scatter(table: Table, mapping: Mapping, opts: PlotOptions): Buil
   layout.showlegend = series.length > 1;
   layout.hovermode = opts.hoverUnified ? 'x unified' : 'closest';
   const spike = { showspikes: true, spikemode: 'across' as const, spikethickness: 1, spikedash: 'dot', spikecolor: '#B0B7C0' };
-  layout.xaxis = { ...layout.xaxis, ...spike };
-  layout.yaxis = { ...layout.yaxis, ...spike };
+  const xs = series.flatMap((s) => s.x);
+  const ys = series.flatMap((s) => s.y);
+  layout.xaxis = { ...layout.xaxis, ...spike, ...axisScaleProps(opts.xScale, xs) };
+  layout.yaxis = { ...layout.yaxis, ...spike, ...axisScaleProps(opts.yScale, ys) };
   return { traces, layout };
 }

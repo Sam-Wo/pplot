@@ -3,6 +3,7 @@ import type { Mapping, PlotOptions, Table } from '../data/types';
 import { xyFromMapping } from '../data/mapping';
 import { paletteColor } from '../theme/palettes';
 import { baseLayout } from '../theme/plotlyTheme';
+import { axisScaleProps } from './axisScale';
 import { hexA, hoverStyle } from './util';
 import type { BuildResult } from './index';
 
@@ -85,5 +86,7 @@ export function line(table: Table, mapping: Mapping, opts: PlotOptions): BuildRe
   });
   layout.showlegend = series.length > 1;
   layout.hovermode = opts.hoverUnified ? 'x unified' : 'closest';
+  layout.xaxis = { ...layout.xaxis, ...axisScaleProps(opts.xScale, series.flatMap((s) => s.x)) };
+  layout.yaxis = { ...layout.yaxis, ...axisScaleProps(opts.yScale, series.flatMap((s) => s.y)) };
   return { traces, layout };
 }

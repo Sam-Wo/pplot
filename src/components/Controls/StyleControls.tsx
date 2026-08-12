@@ -2,7 +2,9 @@ import { useStore } from '../../state/store';
 import { isImplemented } from '../../plots';
 import { paletteLabels } from '../../theme/palettes';
 import type {
+  AxisScale,
   CenterKind,
+  DRModel,
   ErrorKind,
   HistNorm,
   PaletteName,
@@ -31,6 +33,8 @@ export function StyleControls() {
   const isGrouped = plotType === 'groupedBar';
   const isScatter = plotType === 'scatter';
   const isLine = plotType === 'line';
+  const isDose = plotType === 'doseResponse';
+  const isXY = isScatter || isLine || isDose;
   const isHeatmap = plotType === 'heatmap';
   const isVolcano = plotType === 'volcano';
   const isHistogram = plotType === 'histogram';
@@ -225,6 +229,50 @@ export function StyleControls() {
           <Toggle checked={o.lineMarkers} onChange={(v) => set({ lineMarkers: v })} label="Show markers" />
           <Toggle checked={o.lineRibbon} onChange={(v) => set({ lineRibbon: v })} label="± SD ribbon" />
           <Toggle checked={o.hoverUnified} onChange={(v) => set({ hoverUnified: v })} label="Unified hover" />
+        </div>
+      )}
+
+      {isDose && (
+        <>
+          <Field label="Curve model">
+            <Segmented<DRModel>
+              value={o.drModel}
+              onChange={(v) => set({ drModel: v })}
+              options={[
+                { value: '4pl', label: '4PL (variable)' },
+                { value: '3pl', label: '3PL (fixed)' },
+              ]}
+            />
+          </Field>
+          <Toggle checked={o.drShowIC50} onChange={(v) => set({ drShowIC50: v })} label="Mark IC50" />
+          <p className="mt-1 text-[11px] text-ink-soft">IC50, Hill slope, and R² show in the legend.</p>
+        </>
+      )}
+
+      {isXY && (
+        <div className="mt-3 grid grid-cols-2 gap-2 border-t border-line pt-3">
+          <Field label="X scale">
+            <Segmented<AxisScale>
+              value={o.xScale}
+              onChange={(v) => set({ xScale: v })}
+              options={[
+                { value: 'linear', label: 'Lin' },
+                { value: 'log10', label: 'log₁₀' },
+                { value: 'log2', label: 'log₂' },
+              ]}
+            />
+          </Field>
+          <Field label="Y scale">
+            <Segmented<AxisScale>
+              value={o.yScale}
+              onChange={(v) => set({ yScale: v })}
+              options={[
+                { value: 'linear', label: 'Lin' },
+                { value: 'log10', label: 'log₁₀' },
+                { value: 'log2', label: 'log₂' },
+              ]}
+            />
+          </Field>
         </div>
       )}
 

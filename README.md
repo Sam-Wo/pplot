@@ -23,9 +23,12 @@ An example dataset loads on first run, so the canvas is never empty.
   editable in a spreadsheet-style grid. Shape (Column / two-way / XY / matrix) is auto-detected and
   reassignable via the column-role UI.
 - **Plots** — bar, dot/strip, heatmap (± z-score), box, violin (± half), grouped/stacked bar,
-  scatter (linear + LOESS trendline with R²), line/time-course (± SD ribbon), volcano (thresholds +
-  gene labels + click-to-pin), histogram/density (KDE overlay), raincloud, and paired/before-after —
-  all on a refined, slide-ready theme with the colorblind-safe Okabe–Ito palette.
+  scatter (linear + LOESS trendline with R²), line/time-course (± SD ribbon), **dose–response with
+  4PL/3PL IC50 fitting**, volcano (thresholds + gene labels + click-to-pin), histogram/density (KDE
+  overlay), raincloud, and paired/before-after — all on a refined, slide-ready theme with the
+  colorblind-safe Okabe–Ito palette.
+- **Curve fitting & axes** — sigmoidal dose–response curves fit a Hill equation (Levenberg–Marquardt)
+  and report IC50/EC50, Hill slope, and R²; XY plots switch between **linear / log₁₀ / log₂** axes.
 - **Statistics** (opt-in) — two-sample (Welch/Student) & paired t-tests, one-way ANOVA, and
   Pearson/Spearman correlation, driving display-only significance brackets on column plots and an
   r/p readout on scatter fits.

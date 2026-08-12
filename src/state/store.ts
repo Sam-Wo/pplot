@@ -44,9 +44,13 @@ export const useStore = create<AppState>((set) => ({
   setTable: (table) => set(adopt(table)),
 
   loadExample: (build, suggested) =>
-    set(() => {
+    set((s) => {
       const table = build();
-      return { table, plotType: suggested, mapping: defaultMapping(table, suggested) };
+      const options =
+        suggested === 'doseResponse' && s.options.xScale === 'linear'
+          ? { ...s.options, xScale: 'log10' as const }
+          : s.options;
+      return { table, plotType: suggested, mapping: defaultMapping(table, suggested), options };
     }),
 
   loadProject: (p) =>
@@ -58,7 +62,16 @@ export const useStore = create<AppState>((set) => ({
     })),
 
   setPlotType: (plot) =>
-    set((s) => ({ plotType: plot, mapping: remapForPlot(s.table, plot, s.mapping) })),
+    set((s) => {
+      const mapping = remapForPlot(s.table, plot, s.mapping);
+      // Dose–response is read on a log-concentration x-axis by convention; adopt
+      // it when the user hasn't deliberately chosen a scale.
+      const options =
+        plot === 'doseResponse' && s.options.xScale === 'linear'
+          ? { ...s.options, xScale: 'log10' as const }
+          : s.options;
+      return { plotType: plot, mapping, options };
+    }),
 
   setMapping: (patch) => set((s) => ({ mapping: { ...s.mapping, ...patch } })),
 

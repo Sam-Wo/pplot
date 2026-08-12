@@ -48,7 +48,8 @@ export function defaultMapping(table: Table, plot: PlotType): Mapping {
     case 'heatmap':
       return { value: nums, label: texts[0] };
     case 'scatter':
-    case 'line': {
+    case 'line':
+    case 'doseResponse': {
       const x = nums[0] ?? texts[0];
       const y = nums.filter((n) => n !== x);
       return { x, y: y.length ? y : nums.slice(0, 1), group: texts[0] };

@@ -8,6 +8,7 @@ import { violin } from './violin';
 import { groupedBar } from './groupedBar';
 import { scatter } from './scatter';
 import { line } from './line';
+import { doseResponse } from './doseResponse';
 import { volcano } from './volcano';
 import { histogram } from './histogram';
 import { raincloud } from './raincloud';
@@ -31,6 +32,7 @@ export const builders: Partial<Record<PlotType, PlotBuilder>> = {
   groupedBar,
   scatter,
   line,
+  doseResponse,
   volcano,
   histogram,
   raincloud,
@@ -54,6 +56,7 @@ export const plotMeta: Record<PlotType, PlotInfo> = {
   groupedBar: { label: 'Grouped bar', shape: 'Two-way', phase: 2 },
   scatter: { label: 'Scatter (XY)', shape: 'XY', phase: 2 },
   line: { label: 'Line / time-course', shape: 'XY', phase: 2 },
+  doseResponse: { label: 'Dose–response (IC50)', shape: 'XY', phase: 2 },
   raincloud: { label: 'Raincloud', shape: 'Column', phase: 3 },
   volcano: { label: 'Volcano', shape: 'Volcano', phase: 3 },
   histogram: { label: 'Histogram', shape: 'Column', phase: 3 },
@@ -69,6 +72,7 @@ export const plotOrder: PlotType[] = [
   'groupedBar',
   'scatter',
   'line',
+  'doseResponse',
   'raincloud',
   'volcano',
   'histogram',
