@@ -55,11 +55,16 @@ export function defaultMapping(table: Table, plot: PlotType): Mapping {
       return { x, y: y.length ? y : nums.slice(0, 1), group: texts[0] };
     }
     case 'groupedBar':
+    case 'groupedScatter':
       return { x: texts[0], group: texts[1], value: nums.slice(0, 1) };
     case 'volcano':
       return { log2fc: nums[0], pvalue: nums[1], label: texts[0] };
     case 'paired':
       return { value: nums.slice(0, 2), label: texts[0] };
+    case 'pie':
+      return { label: texts[0], value: nums.slice(0, 1) };
+    case 'kaplanMeier':
+      return { time: nums[0], event: nums[1], group: texts[0] };
     case 'box':
     case 'violin':
     case 'histogram':
@@ -224,4 +229,65 @@ export function twoWayFromMapping(table: Table, mapping: Mapping): TwoWay {
     byCategory: categories.map((_, ci) => cells[gi][ci] ?? []),
   }));
   return { categories, groups };
+}
+
+// --- Parts-of-whole extraction (pie) ----------------------------------------
+
+export interface Parts {
+  labels: string[];
+  values: number[];
+}
+
+// A label column + one value column, summed by label (so repeated categories
+// aggregate). With no label column, each row of the value column is its own
+// slice labelled by row.
+export function partsFromMapping(table: Table, mapping: Mapping): Parts {
+  const valCol = getColumn(table, mapping.value?.[0]) ?? numericColumns(table)[0];
+  if (!valCol) return { labels: [], values: [] };
+  const labelCol = getColumn(table, mapping.label);
+  const order: string[] = [];
+  const sums = new Map<string, number>();
+  for (let r = 0; r < valCol.values.length; r++) {
+    const v = asNumber(valCol.values[r]);
+    if (!Number.isFinite(v)) continue;
+    const key = labelCol && labelCol.values[r] != null ? String(labelCol.values[r]) : `Item ${r + 1}`;
+    if (!sums.has(key)) order.push(key);
+    sums.set(key, (sums.get(key) ?? 0) + v);
+  }
+  return { labels: order, values: order.map((k) => sums.get(k) ?? 0) };
+}
+
+// --- Survival extraction (Kaplan–Meier) -------------------------------------
+
+export interface SurvivalGroup {
+  name: string;
+  obs: { time: number; event: boolean }[];
+}
+
+// time column + event indicator (1/true = event, 0/false/blank = censored),
+// optionally split by a group column. Event values parse leniently
+// ("1","yes","true","dead","event" → event).
+export function survivalFromMapping(table: Table, mapping: Mapping): SurvivalGroup[] {
+  const timeCol = getColumn(table, mapping.time);
+  if (!timeCol) return [];
+  const eventCol = getColumn(table, mapping.event);
+  const groupCol = getColumn(table, mapping.group);
+  const isEvent = (c: Cell): boolean => {
+    if (c == null) return false;
+    if (typeof c === 'number') return c !== 0;
+    const s = String(c).trim().toLowerCase();
+    return s === '1' || s === 'yes' || s === 'true' || s === 'dead' || s === 'event' || s === 'y';
+  };
+
+  const map = new Map<string, SurvivalGroup>();
+  for (let r = 0; r < table.nRows; r++) {
+    const t = asNumber(timeCol.values[r]);
+    if (!Number.isFinite(t)) continue;
+    // No event column → treat every observation as an event.
+    const event = eventCol ? isEvent(eventCol.values[r]) : true;
+    const g = groupCol && groupCol.values[r] != null ? String(groupCol.values[r]) : 'All';
+    if (!map.has(g)) map.set(g, { name: g, obs: [] });
+    map.get(g)!.obs.push({ time: t, event });
+  }
+  return [...map.values()];
 }

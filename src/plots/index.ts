@@ -13,6 +13,9 @@ import { volcano } from './volcano';
 import { histogram } from './histogram';
 import { raincloud } from './raincloud';
 import { paired } from './paired';
+import { pie } from './pie';
+import { kaplanMeier } from './kaplanMeier';
+import { groupedScatter } from './groupedScatter';
 
 // Core builder contract (§3): every plot is a pure
 // (table, mapping, opts) => { traces, layout }.
@@ -37,12 +40,15 @@ export const builders: Partial<Record<PlotType, PlotBuilder>> = {
   histogram,
   raincloud,
   paired,
+  pie,
+  kaplanMeier,
+  groupedScatter,
 };
 
 export interface PlotInfo {
   label: string;
   shape: string;
-  phase: 1 | 2 | 3;
+  phase: 1 | 2 | 3 | 4; // 4 = extra (non-spec Prism types)
 }
 
 // All plot types the spec targets, with the phase they land in. The picker
@@ -61,6 +67,9 @@ export const plotMeta: Record<PlotType, PlotInfo> = {
   volcano: { label: 'Volcano', shape: 'Volcano', phase: 3 },
   histogram: { label: 'Histogram', shape: 'Column', phase: 3 },
   paired: { label: 'Paired', shape: 'Two conditions', phase: 3 },
+  pie: { label: 'Pie / parts', shape: 'Parts', phase: 4 },
+  kaplanMeier: { label: 'Kaplan–Meier', shape: 'Survival', phase: 4 },
+  groupedScatter: { label: 'Grouped scatter', shape: 'Two-way', phase: 4 },
 };
 
 export const plotOrder: PlotType[] = [
@@ -77,6 +86,9 @@ export const plotOrder: PlotType[] = [
   'volcano',
   'histogram',
   'paired',
+  'groupedScatter',
+  'pie',
+  'kaplanMeier',
 ];
 
 export function isImplemented(plot: PlotType): boolean {

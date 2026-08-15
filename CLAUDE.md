@@ -70,8 +70,14 @@ family (scatter, line, dose–response). Log₁₀ is Plotly's native log axis; 
 relabelled with power-of-2 ticks (Plotly has no base-2 axis). Note the shape-coordinate gotcha:
 shapes on a log axis need `log10(value)` — see `shapeCoord`. Dose–response defaults its x to Log₁₀.
 
-**Remaining (requested, not yet built):** non-spec Prism types (pie / parts-of-whole, Kaplan–Meier
-survival, grouped scatter), Glide Data Grid swap, and faceting / small multiples.
+**Non-spec Prism types (user request):** pie / parts-of-whole (`plots/pie.ts`, label + value summed
+by category, donut option), Kaplan–Meier survival (`plots/kaplanMeier.ts` + `lib/survival.ts`:
+product-limit estimator, Greenwood 95% CI band, censoring ticks, median in legend; roles `time` /
+`event` / `group`), and grouped scatter (`plots/groupedScatter.ts`, two-way categories with
+side-by-side offset subgroups + mean crossbars). Registered in `plots/index.ts` with `phase: 4`
+(extra); survival example added. Verified: KM matches hand-computed S(t)/median/censoring.
+
+**Remaining (requested, not yet built):** Glide Data Grid swap and faceting / small multiples.
 
 ### Deliberate deviations from the spec
 - **Simple controlled grid** still in place; Glide Data Grid swap-in is deferred (spec §2 permits a

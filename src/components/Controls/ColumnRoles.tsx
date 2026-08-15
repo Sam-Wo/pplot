@@ -67,8 +67,8 @@ export function ColumnRoles() {
     );
   }
 
-  // --- Grouped bar (two-way tidy) ---
-  if (plotType === 'groupedBar') {
+  // --- Grouped bar / grouped scatter (two-way tidy) ---
+  if (plotType === 'groupedBar' || plotType === 'groupedScatter') {
     return (
       <div>
         <Field label="Category (x)">
@@ -123,6 +123,41 @@ export function ColumnRoles() {
               </option>
             ))}
           </Select>
+        </Field>
+      </div>
+    );
+  }
+
+  // --- Pie / parts-of-whole ---
+  if (plotType === 'pie') {
+    return (
+      <div>
+        <Field label="Category (labels)">
+          <ColSelect value={mapping.label} onChange={(v) => setMapping({ label: v })} names={texts.map((c) => c.name)} />
+        </Field>
+        <Field label="Value">
+          <ColSelect
+            value={mapping.value?.[0]}
+            onChange={(v) => setMapping({ value: v ? [v] : [] })}
+            names={nums.map((c) => c.name)}
+          />
+        </Field>
+      </div>
+    );
+  }
+
+  // --- Kaplan–Meier survival ---
+  if (plotType === 'kaplanMeier') {
+    return (
+      <div>
+        <Field label="Time">
+          <ColSelect value={mapping.time} onChange={(v) => setMapping({ time: v })} names={nums.map((c) => c.name)} />
+        </Field>
+        <Field label="Event (1 = event, 0 = censored)">
+          <ColSelect value={mapping.event} onChange={(v) => setMapping({ event: v })} names={table.columns.map((c) => c.name)} />
+        </Field>
+        <Field label="Group (arm)">
+          <ColSelect value={mapping.group} onChange={(v) => setMapping({ group: v })} names={texts.map((c) => c.name)} />
         </Field>
       </div>
     );

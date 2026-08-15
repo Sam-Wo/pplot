@@ -33,6 +33,8 @@ export interface Mapping {
   label?: string; // heatmap row labels / point labels
   log2fc?: string; // volcano
   pvalue?: string; // volcano
+  time?: string; // Kaplan–Meier time-to-event
+  event?: string; // Kaplan–Meier event indicator (1 = event, 0 = censored)
 }
 
 export type PlotType =
@@ -48,7 +50,10 @@ export type PlotType =
   | 'raincloud'
   | 'volcano'
   | 'histogram'
-  | 'paired';
+  | 'paired'
+  | 'pie'
+  | 'kaplanMeier'
+  | 'groupedScatter';
 
 export type ErrorKind = 'sd' | 'sem' | 'ci95' | 'none';
 export type CenterKind = 'mean' | 'median';
@@ -124,6 +129,14 @@ export interface PlotOptions {
 
   // paired
   pairedColorByDirection: boolean;
+
+  // pie / parts-of-whole
+  pieDonut: boolean;
+  pieShowValues: boolean;
+
+  // Kaplan–Meier survival
+  kmShowCI: boolean;
+  kmShowCensor: boolean;
 }
 
 export const defaultOptions: PlotOptions = {
@@ -162,4 +175,8 @@ export const defaultOptions: PlotOptions = {
   histNorm: 'count',
   histDensity: false,
   pairedColorByDirection: true,
+  pieDonut: true,
+  pieShowValues: true,
+  kmShowCI: true,
+  kmShowCensor: true,
 };

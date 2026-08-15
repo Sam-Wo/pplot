@@ -114,6 +114,29 @@ export const examples: Example[] = [
         ]),
       ]),
   },
+  {
+    id: 'survival',
+    name: 'Survival (time-to-event)',
+    description: 'Time + event (1 = event, 0 = censored) + treatment arm — for Kaplan–Meier.',
+    suggested: 'kaplanMeier',
+    build: () =>
+      table([
+        num('Time (months)', [
+          2, 3, 4, 6, 8, 9, 11, 13, 16, 18, 22, 24,
+          5, 7, 10, 12, 14, 17, 19, 21, 23, 25, 27, 30,
+        ]),
+        num('Event', [
+          1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0,
+          1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0,
+        ]),
+        text('Arm', [
+          'Placebo', 'Placebo', 'Placebo', 'Placebo', 'Placebo', 'Placebo',
+          'Placebo', 'Placebo', 'Placebo', 'Placebo', 'Placebo', 'Placebo',
+          'Treatment', 'Treatment', 'Treatment', 'Treatment', 'Treatment', 'Treatment',
+          'Treatment', 'Treatment', 'Treatment', 'Treatment', 'Treatment', 'Treatment',
+        ]),
+      ]),
+  },
 ];
 
 export const firstRunExample = examples[0];

@@ -39,6 +39,9 @@ export function StyleControls() {
   const isVolcano = plotType === 'volcano';
   const isHistogram = plotType === 'histogram';
   const isPaired = plotType === 'paired';
+  const isPie = plotType === 'pie';
+  const isKM = plotType === 'kaplanMeier';
+  const isGroupedScatter = plotType === 'groupedScatter';
   const isColumn = isBarDot || isBox || isViolin;
 
   const significanceBlock = (
@@ -162,6 +165,27 @@ export function StyleControls() {
           {centerField}
           {errorField}
         </>
+      )}
+
+      {isGroupedScatter && (
+        <>
+          {centerField}
+          {errorField}
+        </>
+      )}
+
+      {isPie && (
+        <div className="mt-1 flex flex-col gap-1">
+          <Toggle checked={o.pieDonut} onChange={(v) => set({ pieDonut: v })} label="Donut" />
+          <Toggle checked={o.pieShowValues} onChange={(v) => set({ pieShowValues: v })} label="Show labels + percent" />
+        </div>
+      )}
+
+      {isKM && (
+        <div className="mt-1 flex flex-col gap-1">
+          <Toggle checked={o.kmShowCI} onChange={(v) => set({ kmShowCI: v })} label="95% CI band" />
+          <Toggle checked={o.kmShowCensor} onChange={(v) => set({ kmShowCensor: v })} label="Censoring ticks" />
+        </div>
       )}
 
       {isBox && (
