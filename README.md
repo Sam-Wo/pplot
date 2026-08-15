@@ -31,6 +31,8 @@ An example dataset loads on first run, so the canvas is never empty.
   and report IC50/EC50, Hill slope, and R²; XY plots switch between **linear / log₁₀ / log₂** axes.
 - **More Prism-style types** — pie / parts-of-whole (donut), **Kaplan–Meier survival** (product-limit
   estimator with 95% CI band, censoring ticks, and median in the legend), and grouped scatter.
+- **Higher-dimensionality** — **PCA scatter** (with % variance and an optional loadings biplot),
+  **correlation matrix** (Pearson/Spearman), **parallel coordinates**, and a **scatter-plot matrix**.
 - **Statistics** (opt-in) — two-sample (Welch/Student) & paired t-tests, one-way ANOVA, and
   Pearson/Spearman correlation, driving display-only significance brackets on column plots and an
   r/p readout on scatter fits.

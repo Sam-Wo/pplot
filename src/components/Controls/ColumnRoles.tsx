@@ -6,6 +6,7 @@ import { Field, Select } from '../ui';
 
 const COLUMN_SHAPE: PlotType[] = ['bar', 'dot', 'box', 'violin', 'histogram', 'raincloud', 'paired'];
 const XY_SHAPE: PlotType[] = ['scatter', 'line', 'doseResponse'];
+const MULTIVAR: PlotType[] = ['pca', 'parallelCoords', 'splom'];
 
 // Role mapping UI (§5), shaped by plot type. Smart defaults come from the store;
 // this lets the user reassign columns to slots.
@@ -159,6 +160,44 @@ export function ColumnRoles() {
         <Field label="Group (arm)">
           <ColSelect value={mapping.group} onChange={(v) => setMapping({ group: v })} names={texts.map((c) => c.name)} />
         </Field>
+      </div>
+    );
+  }
+
+  // --- Correlation matrix (numeric columns only) ---
+  if (plotType === 'correlation') {
+    const selected = mapping.value ?? nums.map((c) => c.name);
+    const toggle = (name: string) =>
+      setMapping({
+        value: selected.includes(name) ? selected.filter((n) => n !== name) : [...selected, name],
+      });
+    return (
+      <Field label="Columns to correlate">
+        <CheckList names={nums.map((c) => c.name)} selected={selected} onToggle={toggle} emptyMsg="No numeric columns." />
+      </Field>
+    );
+  }
+
+  // --- Multivariate (PCA / parallel coords / SPLOM) ---
+  if (MULTIVAR.includes(plotType)) {
+    const selected = mapping.value ?? nums.map((c) => c.name);
+    const toggle = (name: string) =>
+      setMapping({
+        value: selected.includes(name) ? selected.filter((n) => n !== name) : [...selected, name],
+      });
+    return (
+      <div>
+        <Field label="Features (numeric columns)">
+          <CheckList names={nums.map((c) => c.name)} selected={selected} onToggle={toggle} emptyMsg="No numeric columns." />
+        </Field>
+        <Field label="Colour / group by">
+          <ColSelect value={mapping.group} onChange={(v) => setMapping({ group: v })} names={texts.map((c) => c.name)} />
+        </Field>
+        {plotType !== 'parallelCoords' && (
+          <Field label="Point labels">
+            <ColSelect value={mapping.label} onChange={(v) => setMapping({ label: v })} names={table.columns.map((c) => c.name)} />
+          </Field>
+        )}
       </div>
     );
   }

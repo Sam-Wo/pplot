@@ -93,7 +93,8 @@ function attachVolcano(gd: any): () => void {
 }
 
 export function attachHover(gd: HTMLDivElement, plotType: PlotType): () => void {
-  if (plotType === 'heatmap') return attachHeatmapCrosshair(gd);
+  if (plotType === 'heatmap' || plotType === 'correlation') return attachHeatmapCrosshair(gd);
   if (plotType === 'volcano') return attachVolcano(gd);
+  // parcoords/splom have their own native brushing; series-dim is a no-op there.
   return attachSeriesHighlight(gd);
 }

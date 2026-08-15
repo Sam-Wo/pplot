@@ -65,6 +65,12 @@ export function defaultMapping(table: Table, plot: PlotType): Mapping {
       return { label: texts[0], value: nums.slice(0, 1) };
     case 'kaplanMeier':
       return { time: nums[0], event: nums[1], group: texts[0] };
+    case 'pca':
+    case 'parallelCoords':
+    case 'splom':
+      return { value: nums, group: texts[0], label: texts[0] };
+    case 'correlation':
+      return { value: nums };
     case 'box':
     case 'violin':
     case 'histogram':
@@ -255,6 +261,40 @@ export function partsFromMapping(table: Table, mapping: Mapping): Parts {
     sums.set(key, (sums.get(key) ?? 0) + v);
   }
   return { labels: order, values: order.map((k) => sums.get(k) ?? 0) };
+}
+
+// --- Row-wise feature matrix (PCA, parallel coords, SPLOM) ------------------
+
+export interface FeatureMatrix {
+  featureNames: string[];
+  rows: (number | null)[][]; // [observation][feature]
+  groups: string[]; // per-row group label ('' if none)
+  labels: string[]; // per-row point label
+}
+
+// Observations are table rows; features are the selected numeric columns.
+export function featureMatrixFromMapping(table: Table, mapping: Mapping): FeatureMatrix {
+  const featureNames = (mapping.value ?? numericColumns(table).map((c) => c.name)).filter((n) => {
+    const c = getColumn(table, n);
+    return c && c.type === 'numeric';
+  });
+  const cols = featureNames.map((n) => getColumn(table, n)!);
+  const groupCol = getColumn(table, mapping.group);
+  const labelCol = getColumn(table, mapping.label);
+  const rows: (number | null)[][] = [];
+  const groups: string[] = [];
+  const labels: string[] = [];
+  for (let r = 0; r < table.nRows; r++) {
+    rows.push(
+      cols.map((c) => {
+        const v = c.values[r];
+        return typeof v === 'number' && Number.isFinite(v) ? v : null;
+      })
+    );
+    groups.push(groupCol && groupCol.values[r] != null ? String(groupCol.values[r]) : '');
+    labels.push(labelCol && labelCol.values[r] != null ? String(labelCol.values[r]) : `Row ${r + 1}`);
+  }
+  return { featureNames, rows, groups, labels };
 }
 
 // --- Survival extraction (Kaplan–Meier) -------------------------------------

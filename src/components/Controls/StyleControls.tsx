@@ -42,6 +42,8 @@ export function StyleControls() {
   const isPie = plotType === 'pie';
   const isKM = plotType === 'kaplanMeier';
   const isGroupedScatter = plotType === 'groupedScatter';
+  const isPCA = plotType === 'pca';
+  const isCorr = plotType === 'correlation';
   const isColumn = isBarDot || isBox || isViolin;
 
   const significanceBlock = (
@@ -186,6 +188,29 @@ export function StyleControls() {
           <Toggle checked={o.kmShowCI} onChange={(v) => set({ kmShowCI: v })} label="95% CI band" />
           <Toggle checked={o.kmShowCensor} onChange={(v) => set({ kmShowCensor: v })} label="Censoring ticks" />
         </div>
+      )}
+
+      {isPCA && (
+        <div className="mt-1 flex flex-col gap-1">
+          <Toggle checked={o.pcaStandardize} onChange={(v) => set({ pcaStandardize: v })} label="Standardize features" />
+          <Toggle checked={o.pcaBiplot} onChange={(v) => set({ pcaBiplot: v })} label="Biplot (loadings)" />
+        </div>
+      )}
+
+      {isCorr && (
+        <>
+          <Field label="Method">
+            <Segmented<'pearson' | 'spearman'>
+              value={o.corrMethod}
+              onChange={(v) => set({ corrMethod: v })}
+              options={[
+                { value: 'pearson', label: 'Pearson' },
+                { value: 'spearman', label: 'Spearman' },
+              ]}
+            />
+          </Field>
+          <Toggle checked={o.corrShowValues} onChange={(v) => set({ corrShowValues: v })} label="Show r values" />
+        </>
       )}
 
       {isBox && (

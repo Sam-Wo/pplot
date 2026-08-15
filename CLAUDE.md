@@ -77,6 +77,15 @@ product-limit estimator, Greenwood 95% CI band, censoring ticks, median in legen
 side-by-side offset subgroups + mean crossbars). Registered in `plots/index.ts` with `phase: 4`
 (extra); survival example added. Verified: KM matches hand-computed S(t)/median/censoring.
 
+**Higher-dimensionality types (user request):** PCA scatter (`plots/pca.ts` + `lib/pca.ts`:
+covariance/correlation matrix + Jacobi eigensolver, standardize + biplot options, % variance in axis
+titles), correlation matrix (`plots/correlation.ts`: pairwise Pearson/Spearman diverging heatmap,
+reuses `lib/tests.ts`), parallel coordinates (`plots/parallelCoords.ts`, native `parcoords` with
+discrete group colouring) and scatter-plot matrix (`plots/splom.ts`, native `splom`, lower-triangle,
+one trace per group). Row-wise feature extraction via `featureMatrixFromMapping`; multivariate
+example added. Correlation reuses the heatmap crosshair. Verified: eigensolver + PCA recover known
+values.
+
 **Remaining (requested, not yet built):** Glide Data Grid swap and faceting / small multiples.
 
 ### Deliberate deviations from the spec

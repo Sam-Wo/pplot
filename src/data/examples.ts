@@ -115,6 +115,40 @@ export const examples: Example[] = [
       ]),
   },
   {
+    id: 'multivariate',
+    name: 'Multivariate samples',
+    description: 'Many numeric features per sample + a class column — for PCA, correlation, SPLOM.',
+    suggested: 'pca',
+    build: () =>
+      table([
+        text('Class', [
+          'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
+          'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B',
+          'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C',
+        ]),
+        num('Feature 1', [
+          5.1, 4.9, 4.7, 5.0, 5.4, 4.6, 5.0, 4.4,
+          7.0, 6.4, 6.9, 6.5, 6.3, 6.6, 5.9, 6.7,
+          6.3, 5.8, 7.1, 6.3, 6.5, 7.6, 4.9, 7.3,
+        ]),
+        num('Feature 2', [
+          3.5, 3.0, 3.2, 3.6, 3.9, 3.4, 3.4, 2.9,
+          3.2, 3.2, 3.1, 2.8, 2.5, 3.0, 3.0, 3.1,
+          3.3, 2.7, 3.0, 2.9, 3.0, 3.0, 2.5, 2.9,
+        ]),
+        num('Feature 3', [
+          1.4, 1.4, 1.3, 1.4, 1.7, 1.4, 1.5, 1.4,
+          4.7, 4.5, 4.9, 4.6, 4.9, 4.4, 4.2, 4.4,
+          6.0, 5.1, 5.9, 5.6, 5.8, 6.6, 4.5, 6.3,
+        ]),
+        num('Feature 4', [
+          0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2,
+          1.4, 1.5, 1.5, 1.5, 1.5, 1.4, 1.5, 1.4,
+          2.5, 1.9, 2.1, 1.8, 2.2, 2.1, 1.7, 1.8,
+        ]),
+      ]),
+  },
+  {
     id: 'survival',
     name: 'Survival (time-to-event)',
     description: 'Time + event (1 = event, 0 = censored) + treatment arm — for Kaplan–Meier.',

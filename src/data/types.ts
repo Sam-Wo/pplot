@@ -53,7 +53,11 @@ export type PlotType =
   | 'paired'
   | 'pie'
   | 'kaplanMeier'
-  | 'groupedScatter';
+  | 'groupedScatter'
+  | 'pca'
+  | 'correlation'
+  | 'parallelCoords'
+  | 'splom';
 
 export type ErrorKind = 'sd' | 'sem' | 'ci95' | 'none';
 export type CenterKind = 'mean' | 'median';
@@ -137,6 +141,14 @@ export interface PlotOptions {
   // Kaplan–Meier survival
   kmShowCI: boolean;
   kmShowCensor: boolean;
+
+  // PCA
+  pcaStandardize: boolean; // z-score features before PCA (correlation PCA)
+  pcaBiplot: boolean; // overlay loading vectors
+
+  // correlation matrix
+  corrMethod: 'pearson' | 'spearman';
+  corrShowValues: boolean;
 }
 
 export const defaultOptions: PlotOptions = {
@@ -179,4 +191,8 @@ export const defaultOptions: PlotOptions = {
   pieShowValues: true,
   kmShowCI: true,
   kmShowCensor: true,
+  pcaStandardize: true,
+  pcaBiplot: false,
+  corrMethod: 'pearson',
+  corrShowValues: true,
 };

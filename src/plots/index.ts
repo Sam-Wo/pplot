@@ -16,6 +16,10 @@ import { paired } from './paired';
 import { pie } from './pie';
 import { kaplanMeier } from './kaplanMeier';
 import { groupedScatter } from './groupedScatter';
+import { pca } from './pca';
+import { correlation } from './correlation';
+import { parallelCoords } from './parallelCoords';
+import { splom } from './splom';
 
 // Core builder contract (§3): every plot is a pure
 // (table, mapping, opts) => { traces, layout }.
@@ -43,6 +47,10 @@ export const builders: Partial<Record<PlotType, PlotBuilder>> = {
   pie,
   kaplanMeier,
   groupedScatter,
+  pca,
+  correlation,
+  parallelCoords,
+  splom,
 };
 
 export interface PlotInfo {
@@ -70,6 +78,10 @@ export const plotMeta: Record<PlotType, PlotInfo> = {
   pie: { label: 'Pie / parts', shape: 'Parts', phase: 4 },
   kaplanMeier: { label: 'Kaplan–Meier', shape: 'Survival', phase: 4 },
   groupedScatter: { label: 'Grouped scatter', shape: 'Two-way', phase: 4 },
+  pca: { label: 'PCA scatter', shape: 'Multivariate', phase: 4 },
+  correlation: { label: 'Correlation matrix', shape: 'Multivariate', phase: 4 },
+  parallelCoords: { label: 'Parallel coords', shape: 'Multivariate', phase: 4 },
+  splom: { label: 'Scatter matrix', shape: 'Multivariate', phase: 4 },
 };
 
 export const plotOrder: PlotType[] = [
@@ -89,6 +101,10 @@ export const plotOrder: PlotType[] = [
   'groupedScatter',
   'pie',
   'kaplanMeier',
+  'pca',
+  'correlation',
+  'parallelCoords',
+  'splom',
 ];
 
 export function isImplemented(plot: PlotType): boolean {
