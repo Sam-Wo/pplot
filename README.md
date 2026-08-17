@@ -46,9 +46,17 @@ An example dataset loads on first run, so the canvas is never empty.
 ## Build
 
 ```bash
-npm run build     # → dist/ (static, host anywhere)
+npm run build              # → dist/ (static, host anywhere)
+npm run build:standalone   # → dist-standalone/index.html (one self-contained file)
 npm run typecheck
 ```
+
+### Share as a single file
+
+`npm run build:standalone` inlines all JS, CSS, and fonts into a **single ~6.6 MB
+`index.html`** with no external dependencies. Email it, drop it on SharePoint/Teams, or
+just double-click it — it runs entirely offline in the browser, data never leaves the
+machine. Ideal for sharing a build for feedback.
 
 ## Docs
 
